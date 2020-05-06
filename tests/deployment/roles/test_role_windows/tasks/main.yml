@@ -1,0 +1,51 @@
+---
+# tasks file for role test_role
+  - name: "Check WinRM transport"
+    debug: 
+      msg: "{{ ansible_winrm_transport }}"
+    when: ansible_winrm_transport is defined
+
+  - name: "Create temporary directory"
+    win_tempfile:
+      state: directory
+    register: temp_dir
+
+  - name: "Set {{ temp_dir.path }} rights"
+    win_file:
+      path: "{{ temp_dir.path }}"
+      state: directory
+
+  - set_fact:
+      tempfile: "{{ temp_dir.path  }}\\{{ test_file }}"
+
+  - name: "Create {{ test_file }} inside {{ temp_dir.path }}"
+    win_file:
+      path: "{{ tempfile }}"
+      state: touch
+
+  - name: "Write the line {{ test_line }} in {{ test_file }}"
+    win_lineinfile:
+      dest: "{{ tempfile }}"
+      line: TEST_LINE=TEST
+
+  - name: "Check if {{ test_line }} is present in {{ test_file }} using the command module" 
+    win_command: "type {{ tempfile }}"
+    register: test_file_content
+    failed_when: test_line not in test_file_content.stdout
+    changed_when: False
+    ignore_errors: true
+
+  - name: "Download nexus file"
+    win_get_url:
+      url: "{{ test_nexus_url }}"
+      dest: "{{ temp_dir.path  }}\\{{ test_nexus_sample_file }}"
+      validate_certs: no
+      url_password: "{{ nexus_password }}"
+      url_username: "{{ nexus_user }}"
+    register: download_nexus
+    failed_when: download_nexus.status_code in ['200','201','301','302','401','403']
+
+  - name: "Remove {{ temp_dir.path }}"
+    win_file: 
+      path: "{{ temp_dir.path }}"
+      state: absent

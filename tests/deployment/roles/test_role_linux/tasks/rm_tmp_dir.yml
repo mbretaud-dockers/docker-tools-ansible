@@ -1,0 +1,5 @@
+---
+- name: "Remove {{ temp_dir.path }}"
+  file:
+    path: "{{ temp_dir.path }}"
+    state: absent

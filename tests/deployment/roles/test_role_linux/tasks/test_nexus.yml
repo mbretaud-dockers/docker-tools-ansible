@@ -1,0 +1,10 @@
+---
+- name: "Download nexus file"
+  get_url:
+    url: "{{ test_nexus_url }}"
+    dest: "{{ temp_dir.path }}/{{ test_nexus_sample_file }}"
+    validate_certs: no
+    url_password: "{{ nexus_password }}"
+    url_username: "{{ nexus_user }}"
+  register: download_nexus
+  failed_when: download_nexus.status_code in ['200','201','301','302','401','403']

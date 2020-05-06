@@ -1,0 +1,21 @@
+---
+- name: "Create temporary directory"
+  import_tasks: create_tmp_dir.yml
+  tags:
+    - test_create_tmp_dir
+
+- name: "Test file creation"
+  import_tasks: test_write_file.yml
+  tags:
+    - test_create_tmp_dir
+    - test_create_file
+
+- name: "Test DTR image download"
+  import_tasks: test_dtr.yml
+  tags:
+    - test_pull_dtr
+
+- name: "Remove temporary directory"
+  import_tasks: rm_tmp_dir.yml
+  tags:
+    - test_rm_tmp_dir

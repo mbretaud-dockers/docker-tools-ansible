@@ -1,0 +1,12 @@
+[all]
+
+[all:vars]
+site=poc
+
+[poc:children]
+linux
+
+[linux]
+192.168.1.37
+
+

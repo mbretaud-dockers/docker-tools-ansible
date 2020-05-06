@@ -1,0 +1,18 @@
+---
+- name: "Create {{ test_file }} inside {{ temp_dir.path }}"
+  file:
+    path: "{{ temp_dir.path }}/{{ test_file }}"
+    state: touch
+    mode: 0744
+
+- name: "Write the line {{ test_line }} in {{ test_file }}"
+  lineinfile:
+    dest: "{{ temp_dir.path }}/{{ test_file }}"
+    regexp: '^TEST_LINE=.*$'
+    line: 'TEST_LINE={{ test_line }}'
+
+- name: "Check if {{ test_line }} is present in {{ test_file }} using the command module"
+  command: 'cat {{ temp_dir.path + "/" + test_file }} | quote }}'
+  register: test_file_content
+  failed_when: test_line not in test_file_content.stdout
+  changed_when: False

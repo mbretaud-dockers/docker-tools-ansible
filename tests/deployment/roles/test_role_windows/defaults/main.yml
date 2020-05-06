@@ -1,0 +1,5 @@
+---
+test_file: "ansible-test"
+test_line: "Lorem ipsum"
+test_nexus_sample_file: "LdapAdminExe-w64-1.8.3.zip"
+test_nexus_url: "https://nexusm-repo-expert-ul.apps.eul.sncf.fr/repository/maven-groupedeploy-dosn-releases/AnsibleTest/LdapAdminExe-w64/1.8.3/{{ test_nexus_sample_file }}"

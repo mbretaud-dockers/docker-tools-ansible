@@ -1,0 +1,25 @@
+---
+- name: "Check if docker home exists"
+  stat:
+    path: "{{ test_docker_home }}"
+  register: _test_docker_home_result
+
+- debug:
+    msg: "L'utilisateur docker n'est pas present, pas de test DTR."
+  when: not _test_docker_home_result.stat.exists
+
+- become: True
+  become_user: docker
+  when: _test_docker_home_result.stat.exists
+  block:
+    - name: "Test de recuperation d'une image sur la DTR"
+      docker_image:
+        name: "{{ test_dtr_image }}"
+        state: present
+      register: _test_docker_pull
+
+    - name: "Suppression de l'image de test"
+      docker_image:
+        name: "{{ test_dtr_image }}"
+        state: absent
+      when: _test_docker_pull.changed

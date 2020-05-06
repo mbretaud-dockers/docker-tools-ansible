@@ -1,0 +1,6 @@
+---
+test_file: "ansible-test"
+test_line: "Lorem ipsum"
+
+test_docker_home: '/home/docker'
+test_dtr_image: "alpine:3.11"

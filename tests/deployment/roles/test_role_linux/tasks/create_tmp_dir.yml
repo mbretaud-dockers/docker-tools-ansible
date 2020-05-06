@@ -1,0 +1,14 @@
+---
+- name: "Create temporary directory"
+  tempfile:
+    state: directory
+  register: temp_dir
+
+- name: "Set {{ temp_dir.path }} rights"
+  file:
+    path: "{{ temp_dir.path }}"
+    state: directory
+    mode: 0744
+
+# - name: "Find"
+#   shell: "find {{ temp_dir.path }}"

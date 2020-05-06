@@ -1,0 +1,4 @@
+---
+- src: https://gitlab-repo-gpf.apps.eul.sncf.fr/dosn/ansible/skeleton.git
+  scm: git
+  version: 0.1.0
